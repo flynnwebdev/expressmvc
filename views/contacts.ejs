@@ -1,0 +1,11 @@
+<h1>All Contacts</h1>
+<ul>
+    <% for (contact of contacts) { %>
+        <li>
+            <b><%= contact.name %></b> (<%= contact.email %>)
+            <% if (contact.enquiry) { %>
+                <li style="margin-left:2rem"><%= contact.enquiry %></li>
+            <% } %>
+        </li>
+    <% } %>
+</ul>

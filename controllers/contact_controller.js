@@ -1,4 +1,21 @@
-const contacts = []
+// const contacts = []
+const {
+    ContactModel
+} = require('../models/contact_model')
+
+let index = (req, res) => {
+    ContactModel.find()
+        .then(contacts => {
+                res.render('layouts/main', {
+                    view: 'contacts',
+                    title: 'All Contacts',
+                    contacts
+                })
+            })
+            .catch(err => {
+                res.status(500).send(`Error: ${err}`)
+            })
+}
 
 let newContact = (req, res) => {
     res.render('layouts/main', {
@@ -10,22 +27,30 @@ let newContact = (req, res) => {
 let create = (req, res) => {
     let {
         name,
-        email
+        email,
+        enquiry
     } = req.body
     let contact = {
         name,
-        email
+        email,
+        enquiry
     }
-    // let contact = {
-    //     email: req.body.email,
-    //     name: req.body.name
-    // }
-    contacts.push(contact)
-    console.log(contacts)
-    res.render('layouts/main', {
-        view: 'success',
-        title: 'Thanks!'
-    })
+    // contacts.push(contact)
+    // console.log(contacts)
+    ContactModel.create(contact)
+        .then(contact => {
+            res.render('layouts/main', {
+                view: 'success',
+                title: 'Thanks!'
+            })
+        })
+        .catch(err => {
+            res.status(500).send(`Error: ${err}`)
+        })
 }
 
-module.exports = { newContact, create }
+module.exports = {
+    newContact,
+    create,
+    index
+}
